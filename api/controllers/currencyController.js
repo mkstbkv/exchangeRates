@@ -32,3 +32,14 @@ exports.getAllCurrency =  async function (req, res, next) {
     }
 };
 
+exports.getAllByFilterQuery = async function(req, res, next) {
+    try {
+        if (!req.body.ISOCode) return res.status(400).send({message: 'ISOCode is required'});
+
+        const currencies = await Currency.find({ISOCode: {$in : req.body.ISOCode}});
+        return res.send(currencies)
+    } catch(e) {
+        next(e);
+    }
+};
+
